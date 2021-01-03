@@ -1,0 +1,10 @@
+#pip3 install -r requirements.txt
+
+tornado
+torchvision
+pyyaml
+opencv-python
+
+#Depending on the computer, it maybe be necessary to also:
+#sudo apt install libopencv-dev
+

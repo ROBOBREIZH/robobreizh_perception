@@ -1,0 +1,38 @@
+#Path the the libdarknet.so file.
+#Github: https://github.com/AlexeyAB/darknet
+#In the MakeFile, make sure LIBSO = 1.
+
+libdarknet_path:
+  "./dependencies/yolo/darknet/libdarknet.so"
+
+#Path to the openpose directory.
+#Github: https://github.com/CMU-Perceptual-Computing-Lab/openpose
+#The openpose models must have successfully been downloaded.
+#If you have some problems, two very common problems are:
+#In openpose/model/pose/body_25:
+#Check it's not empty. Sometime the model do not download when initializing openpose.
+#In openpose/build/python/:
+#There must be a file with the following naming pattern: pyopenpose.cpython-...-gnu.so
+
+openpose_path:
+  "/home/master/openpose"
+
+#Regular YOLOV3 configuration
+#yolo_weights:
+#  data: "./data/yolo/data.data"
+#  cfg: "./data/yolo/cfg.cfg"
+#  weights: "./data/yolo/yolo_weights.weights"
+
+
+#tiny YOLOV3+PAN configuration.
+#Smaller, faster, requires less GPU.
+#Can be used to solve problem CUDA out of memory on some computers
+#Comment the yolo_weights above and uncomment the following lines to use.
+yolo_weights:
+  data: "./data/yolo/data.data"
+  cfg: "./data/yolo/pan.cfg"
+  weights: "./data/yolo/pan_optimized_last.weights"
+
+openpose_version:
+#"official"
+  "torch"
