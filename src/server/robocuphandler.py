@@ -53,12 +53,12 @@ class RobocupHandler(tornado.web.RequestHandler):
 
     def post(self):
         """
-        This function parses the request body and does something
+        This function parses the request body, analyse the image and send back the results.
         """
         try:
             t = time.time()
             request_payload = tornado.escape.json_decode(self.request.body)
-            input = InputRequest(idPhoto=None, photo=request_payload["image"], indiceCertitude=None, isVideo=False)
+            input_image = request_payload["image"]
 
             objNames = ["displayBag", "displayChair", "displayPerson", "displayPose", "displayWaving", "isMovement", "onlyMovement", "features", "isVideo"]
             disp = []
@@ -67,27 +67,26 @@ class RobocupHandler(tornado.web.RequestHandler):
                     disp.append(request_payload[d])
                 else:
                     disp.append(True)
-            detect = DetectRobocup(displayBag=disp[0], displayChair=disp[1], displayPerson=disp[2], displayPose=disp[3], displayWaving=disp[4], isMovement=disp[5], onlyMovement=disp[6], features=disp[7], isVideo=disp[8])
+            detect = Detect(displayBag=disp[0], displayChair=disp[1], displayPerson=disp[2], displayPose=disp[3], displayWaving=disp[4], isMovement=disp[5], onlyMovement=disp[6], features=disp[7], isVideo=disp[8])
 
-            image, isWaving, isBag, isPerson, isChairEmpty, isChairTaken, features = detect.detect_image(base64_to_cv2(input.photo))
-            data = cv2_to_base64(image).decode('utf-8')
+            output_image, isWaving, isBag, isPerson, isChairEmpty, isChairTaken, features = detect.detect_image(base64_to_cv2(input_image))
+            data = cv2_to_base64(output_image).decode('utf-8')
 
             # read the image created from pepper camera
-            img = cv2.imread("./data/demo/demo_test.png")
+            #img = cv2.imread("./data/demo/demo_test.png")
             # encode the image in order to send it tp the other pc
-            img_encoded = cv2_to_base64_png(img).decode("utf-8")
+            #img_encoded = cv2_to_base64_png(img).decode("utf-8")
 
             output = RobocupRequest(
                 #idPhoto=request_payload["idPhoto"],
-                #data = data
-                data=False,
+                data = data,
                 isWaving=isWaving,
                 isBag=isBag,
                 isPerson=isPerson,
                 isChairEmpty=isChairEmpty,
                 isChairTaken=isChairTaken,
-                features=features,
-                img=img_encoded
+                features=features
+                #img=img_encoded
             )
 
             print('Total time. (%.3fs)' % (time.time() - t))

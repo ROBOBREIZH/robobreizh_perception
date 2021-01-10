@@ -21,7 +21,7 @@ print("OPEN:", openpose_path)
 
 
 if openpose_version == "official":
-    from src.detection.official.openpose import OpenPose
+    from src.detection.openpose.openpose import OpenPose
     OPENPOSE = OpenPose().getInstance()
 else:
     from src.detection.openpose.torch.openpose_pytorch import OpenPosePytorch
@@ -29,7 +29,6 @@ else:
 
 from src.detection.yolov3.yolov3 import YOLOV3
 YOLO = None
-#YOLO = YOLOV3(meta_path=yolo_weights["data"], cfg_path=yolo_weights["cfg"], weights_path=yolo_weights["weights"])
 
 class Features:
     def __init__(self):

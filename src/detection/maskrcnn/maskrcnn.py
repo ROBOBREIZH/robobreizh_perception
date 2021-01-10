@@ -36,7 +36,6 @@ def get_masks(outputs, classes=[0]):
         for cls in classes:
             if instances.pred_classes[i] == cls:
                 mask = instances.pred_masks[i].cpu().tolist()
-                print("Pixel: ", mask[200][300])
                 masks.append(mask)
     return masks
 

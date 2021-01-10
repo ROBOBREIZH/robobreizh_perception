@@ -33,7 +33,6 @@ def prepare_request(path_to_img, isVideo):
     input.isVideo = isVideo
     return input.get_data()
 
-
 def handle_request(response):
     print("Response", response)
     if response.error:
@@ -43,44 +42,39 @@ def handle_request(response):
         print(response.body)
     tornado.ioloop.IOLoop.instance().stop()
 
-
 if __name__ == "__main__":
+    #Parse command
     parser = argparse.ArgumentParser()
-    parser.add_argument('--image', type=str, default='data/test_client/test.jpg', help='photo path')
-    parser.add_argument('--video', type=str, default='data/test_client/cerv.webm', help='video path')
+    parser.add_argument('--image', type=str, default='./data/test_client/test.jpg', help='input photo path')
+    parser.add_argument('--video', type=str, default='./data/test_client/cerv.webm', help='input video path')
+    parser.add_argument('--dest', type=str, default="./data/test_client/video_received.avi", help='save response at')
     parser.add_argument('--mode', type=int, default=0, help='0: photo 1: video')
+    parser.add_argument('--display', type=int, default=0, help='Display the image after receiving a response.')
     opt = parser.parse_args()
     print(opt)
+    display = opt.display
     if opt.mode == 0:
         path=opt.image
     else:
         path=opt.video
+    dest=opt.dest
+
+    #Send request and receive the response
     application.listen(8890)
     http_client = tornado.httpclient.HTTPClient(defaults=dict(request_timeout=180))
-
-    body = tornado.escape.json_encode(prepare_request(path, opt.mode == 1))  # Make it into a post request
+    body = tornado.escape.json_encode(prepare_request(path, opt.mode == 1))
     http = "http://localhost:9989/robocup"
     response = http_client.fetch(http, method='POST', headers=None, body=body)
-
     output = tornado.escape.json_decode(response.body)
 
-    display = True
-    dest= "./data/tmp/received.avi"
     if opt.mode == 0:
         if display:
-            print("isBag: ", len(output["isBag"]))
-            print("isChairEmpty: ", len(output["isChairEmpty"]))
-            print("isWaving: ", output["isWaving"])
-            print("features: ", output["features"])
-            #img = base64_to_cv2(output["data"])
-            #cv2.imshow('image', img)
-            #cv2.waitKey(0)
+            img = base64_to_cv2(output["data"])
+            cv2.imshow('image', img)
+            cv2.waitKey(0)
         pass
     else:
         print("Received video and sent it to: %s" % dest)
-        print("isBag: ", output["isBag"])
-        print("isChairEmpty: ", output["isChairEmpty"])
-        print("isWaving: ", output["isWaving"])
         base64_to_video(dest, output["data"])
         pass
 
