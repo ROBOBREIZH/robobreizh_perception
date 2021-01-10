@@ -47,7 +47,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--image', type=str, default='./data/test_client/test.jpg', help='input photo path')
     parser.add_argument('--video', type=str, default='./data/test_client/cerv.webm', help='input video path')
-    parser.add_argument('--dest', type=str, default="./data/test_client/video_received.avi", help='save response at')
+    parser.add_argument('--dest', type=str, default="./data/demo/demo.png", help='save image/video response at')
     parser.add_argument('--mode', type=int, default=0, help='0: photo 1: video')
     parser.add_argument('--display', type=int, default=0, help='Display the image after receiving a response.')
     opt = parser.parse_args()
@@ -67,9 +67,12 @@ if __name__ == "__main__":
     response = http_client.fetch(http, method='POST', headers=None, body=body)
     output = tornado.escape.json_decode(response.body)
 
+    #Save response
+    img = base64_to_cv2(output["data"])
+    cv2.imwrite(dest, img)
+
     if opt.mode == 0:
         if display:
-            img = base64_to_cv2(output["data"])
             cv2.imshow('image', img)
             cv2.waitKey(0)
         pass

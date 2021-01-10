@@ -49,7 +49,7 @@ class Detect:
             print("Features: ", features)
 
         arr = image
-        cv2.imwrite('./data/demo/demo_test.png', arr)
+        #cv2.imwrite('./data/demo/demo_test.png', arr)
         return arr, arr_hands, arr_bags, arr_persons, arr_empty_chairs, arr_taken_chairs, features
 
     def resize(self, frame, shape):
