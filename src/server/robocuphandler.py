@@ -73,7 +73,7 @@ class RobocupHandler(tornado.web.RequestHandler):
             data = cv2_to_base64(image).decode('utf-8')
 
             # read the image created from pepper camera
-            img = cv2.imread("/home/cerv/rtsd/data/demo/demo_test.png")
+            img = cv2.imread("./data/demo/demo_test.png")
             # encode the image in order to send it tp the other pc
             img_encoded = cv2_to_base64_png(img).decode("utf-8")
 
