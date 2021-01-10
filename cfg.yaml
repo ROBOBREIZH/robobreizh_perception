@@ -1,11 +1,22 @@
+#Port for the server:
+port_server: 9989
+
+
 #Path the the libdarknet.so file.
 #Github: https://github.com/AlexeyAB/darknet
-#In the MakeFile, make sure LIBSO = 1.
+#In the MakeFile, make sure LIBSO = 1 and recompile of necessary.
 
 libdarknet_path:
   "./dependencies/yolo/darknet/libdarknet.so"
 
-#Path to the openpose directory.
+#Openpose version to use.
+#The official version is faster but is more difficult to install.
+#By default, uses the torch vision.
+openpose_version:
+#"official"
+  "torch"
+
+#Path to the official openpose directory. Not necessary if openpose pytorch is used.
 #Github: https://github.com/CMU-Perceptual-Computing-Lab/openpose
 #The openpose models must have successfully been downloaded.
 #If you have some problems, two very common problems are:
@@ -32,7 +43,3 @@ yolo_weights:
   data: "./data/yolo/data.data"
   cfg: "./data/yolo/pan.cfg"
   weights: "./data/yolo/pan_optimized_last.weights"
-
-openpose_version:
-#"official"
-  "torch"

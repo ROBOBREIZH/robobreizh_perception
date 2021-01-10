@@ -12,6 +12,7 @@ def read_yaml(path_to_config):
 CFG = read_yaml(CFG_PATH)
 print("CFG", CFG)
 
+SERVER_PORT = CFG["port_server"]
 libdarknet_path = CFG["libdarknet_path"]
 openpose_path = CFG["openpose_path"]
 yolo_weights = CFG["yolo_weights"]

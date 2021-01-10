@@ -3,20 +3,13 @@ import sys
 import time
 import traceback
 
-import cv2
-import numpy as np
-
-import torch
 import tornado.escape
 import tornado.gen
 import tornado.web
 
 from src.request.robocup_request import RobocupRequest
 from src.detection.detect import Detect
-from src.request.input_request import InputRequest
-from src.request.output_request import OutputRequest
 from src.utils.img_conversion import base64_to_cv2, cv2_to_base64, base64_to_video, cv2_to_base64_png
-from src.utils.conf import YOLO
 
 class RobocupHandler(tornado.web.RequestHandler):
 
