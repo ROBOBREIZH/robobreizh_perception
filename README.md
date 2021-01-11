@@ -75,4 +75,4 @@ cd dependencies/install/data
 bash install
 ```
 
-If it hasn't worked, check that th
+If it hasn't worked, check whether the weights were correctly downloaded in data.
