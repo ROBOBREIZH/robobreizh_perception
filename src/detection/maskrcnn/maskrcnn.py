@@ -18,37 +18,31 @@ predictor = DefaultPredictor(cfg)
 
 SAVE_IMG = True
 
+
 def mask_rcnn(im):
+    '''
+    Perform the mask RCNN detection
+    '''
     outputs = predictor(im)
     v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2, instance_mode=ColorMode.SEGMENTATION)
     out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
     image = out.get_image()
     if SAVE_IMG:
-        cv2.imwrite('/home/cerv/rtsd/data/demo/demo.png', image)
+        cv2.imwrite('./data/demo/demo.png', image)
         #print("out: ", out.get_image())
     return outputs, image
 
 
 def get_masks(outputs, classes=[0]):
+    '''
+    Get all the masks for a given class.
+    '''
     masks = []
     instances = outputs["instances"]
     for i in range(0, len(instances.pred_classes)):
         for cls in classes:
             if instances.pred_classes[i] == cls:
                 mask = instances.pred_masks[i].cpu().tolist()
-                masks.append(mask)
-    return masks
-
-
-
-def get_boxes(outputs, classes=[0]):
-    boxes = []
-    rois = outputs["rois"]
-    for i in range(0, len(rois.pred_classes)):
-        for cls in classes:
-            if instances.pred_classes[i] == cls:
-                mask = instances.pred_masks[i].cpu().tolist()
-                print("Pixel: ", mask[200][300])
                 masks.append(mask)
     return masks
 

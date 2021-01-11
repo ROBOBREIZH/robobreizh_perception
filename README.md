@@ -52,5 +52,27 @@ This will send an image to the server.
 
 The predictions will appear in the terminal and the image will be saved at data/test_client/demo.png.
 
+## Structure
 
+```buildoutcfg
+|data: Contains the trained weights for yolo/openpose.
+|dependencies: Scripts to install all the dependencies.
+|src:
+|---detection: yolo/openpose/mask-rcnn python implementations.
+|---request: Defines the requests handled by the server and their formats.
+|---server: Start the server and handles the HTTP request.   
+|---utils: Utility files to read cfg.yaml and base64 conversions.
+```
 
+## FAQ
+
+### The server can't find the weights.
+
+The weights may not have been downloaded. 
+
+```buildoutcfg
+cd dependencies/install/data
+bash install
+```
+
+If it hasn't worked, check that th

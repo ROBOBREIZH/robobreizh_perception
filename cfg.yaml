@@ -13,8 +13,8 @@ libdarknet_path:
 #The official version is faster but is more difficult to install.
 #By default, uses the torch vision.
 openpose_version:
-#"official"
   "torch"
+#"official"
 
 #Path to the official openpose directory. Not necessary if openpose pytorch is used.
 #Github: https://github.com/CMU-Perceptual-Computing-Lab/openpose
@@ -33,13 +33,3 @@ openpose_path:
 #  data: "./data/yolo/data.data"
 #  cfg: "./data/yolo/cfg.cfg"
 #  weights: "./data/yolo/yolo_weights.weights"
-
-
-#tiny YOLOV3+PAN configuration.
-#Smaller, faster, requires less GPU.
-#Can be used to solve problem CUDA out of memory on some computers
-#Comment the yolo_weights above and uncomment the following lines to use.
-yolo_weights:
-  data: "./data/yolo/data.data"
-  cfg: "./data/yolo/pan.cfg"
-  weights: "./data/yolo/pan_optimized_last.weights"

@@ -27,20 +27,24 @@ class Detect:
         return self.detect_image(arr)
 
     def detect_image(self, arr):
+        '''
+        Perform computer vision detection on the image based on the argument (with or without movement, features detection...)
+        '''
         t = time.time()
         features = []
         arr_bags, arr_hands, arr_persons, arr_empty_chairs, arr_taken_chairs = [], [], [], [], []
+        #Perform pose estimation.
         if self.withMovement:
             poses = OPENPOSE.predict(arr)
             print('Openpose detection. (%.3fs)' % (time.time() - t))
             if self.displayPose: OPENPOSE.draw(arr, poses)
             arr_hands = self.has_raising_hands(poses)
 
+        #Perform detection with mask RCNN for certain objects.
         if not self.onlyMovement:
             out, image = maskrcnn.mask_rcnn(arr)
             arr_persons = maskrcnn.get_masks(out, [0])
             arr_bags = maskrcnn.get_masks(out, [24, 26, 28])
-            #arr_empty_chairs = maskrcnn.get_masks(out, [56])
             arr_empty_chairs, arr_taken_chairs = self.chairs_prediction(out)
 
         #Features detection include age, gender and clothes detection.
@@ -49,7 +53,6 @@ class Detect:
             print("Features: ", features)
 
         arr = image
-        #cv2.imwrite('./data/demo/demo_test.png', arr)
         return arr, arr_hands, arr_bags, arr_persons, arr_empty_chairs, arr_taken_chairs, features
 
     def resize(self, frame, shape):

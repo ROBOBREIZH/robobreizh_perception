@@ -15,11 +15,9 @@ print("CFG", CFG)
 SERVER_PORT = CFG["port_server"]
 libdarknet_path = CFG["libdarknet_path"]
 openpose_path = CFG["openpose_path"]
-yolo_weights = CFG["yolo_weights"]
 openpose_version = CFG["openpose_version"]
 
 print("OPEN:", openpose_path)
-
 
 if openpose_version == "official":
     from src.detection.openpose.openpose import OpenPose

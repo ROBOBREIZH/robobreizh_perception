@@ -3,11 +3,11 @@ from src.utils.conf import FEATURES
 import numpy as np
 
 net = cv2.dnn.readNet(FEATURES.clothesWeights, FEATURES.clothesCfg)
+from src.utils.conf import YOLO_CLOTHES
 
 classes = None
 with open(FEATURES.clothesNames, 'r') as f:
     classes = [line.strip() for line in f.readlines()]
-
 
 #scale = 0.00392
 scale = 1.0
@@ -16,7 +16,6 @@ confidences = []
 boxes = []
 conf_threshold = 0.25
 nms_threshold = 0.4
-
 
 def get_output_layers(net):
     layer_names = net.getLayerNames()
@@ -55,3 +54,24 @@ def clothes_detect(image):
     indices = cv2.dnn.NMSBoxes(boxes, confidences, conf_threshold, nms_threshold)
 
     print("Indices: ", indices)
+    
+def detect_top_bottom_clothes(frame):
+    '''
+    Return the top and bottom clothes a person is wearing.
+    '''
+    raw_detection = YOLO_CLOTHES.detect(frame)
+    print("raw: ", raw_detection)
+
+    clothes = ["", ""]
+    no_top = True
+    no_bottom = True
+    for detection in raw_detection:
+        cls_id = detection[0]
+        if cls_id < 6 or cls_id > 8 and no_top:
+            clothes[0] = classes[cls_id]
+            no_top = False
+        elif 6 <= cls_id <= 8 and no_bottom:
+            clothes[1] = classes[cls_id]
+            no_bottom = False
+    print("clothes: ", clothes)
+    return clothes
