@@ -1,3 +1,5 @@
+sudo apt update
+sudo apt install libopencv-dev python3-opencv
 cd dependencies/install
 #Install Cuda
 #bash cuda/ubuntu18/install.sh
@@ -10,8 +12,8 @@ cd ..
 #Download python dependencies
 bash python_dependencies/install.sh
 #Download MaskRCNN
-#bash maskrcnn/install.sh
+bash maskrcnn/install.sh
 #Download YOLO
 cd yolo
 bash install.sh
-cd ..cd dependencies/install
+cd ..

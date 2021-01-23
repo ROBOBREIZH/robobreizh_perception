@@ -1,3 +1,5 @@
+sudo apt update
+sudo apt install libopencv-dev python3-opencv
 cd dependencies/install
 #Install Cuda
 bash cuda/ubuntu16/install.sh
