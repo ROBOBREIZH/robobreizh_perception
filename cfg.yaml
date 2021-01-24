@@ -7,7 +7,7 @@ port_server: 9989
 #In the MakeFile, make sure LIBSO = 1 and recompile of necessary.
 
 libdarknet_path:
-  "./dependencies/yolo/darknet/libdarknet.so"
+  "./dependencies/install/yolo/darknet/libdarknet.so"
 
 #Openpose version to use.
 #The official version is faster but is more difficult to install.

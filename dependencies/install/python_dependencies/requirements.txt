@@ -4,6 +4,7 @@ tornado
 torchvision
 pyyaml
 opencv-python
+scipy
 
 #Depending on the computer, it maybe be necessary to also:
 #sudo apt install libopencv-dev

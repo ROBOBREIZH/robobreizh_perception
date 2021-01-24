@@ -1,9 +1,9 @@
 from src.detection.yolov3 import darknet
 from src.detection.yolov3.yolo import YOLO
-from src.utils.conf import yolo_weights
+#from src.utils.conf import yolo_weights
 
 class YOLOV3(YOLO):
-    def __init__(self, meta_path=yolo_weights["data"], cfg_path=yolo_weights["cfg"], weights_path=yolo_weights["weights"]):
+    def __init__(self, meta_path, cfg_path, weights_path):
         super().__init__()
         self.meta_path = meta_path
         self.cfg_path = cfg_path

@@ -1,2 +1,5 @@
 /venv/
 /.idea/
+/detectron2/
+/data/
+/dependencies/install/yolo/darknet/

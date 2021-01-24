@@ -6,6 +6,8 @@ import tornado.httpclient
 import tornado.ioloop
 import tornado.web
 
+from src.request.robocup_request import RobocupRequest
+
 from src.utils.img_conversion import base64_to_cv2, base64_to_video
 
 
@@ -20,7 +22,7 @@ application = tornado.web.Application([
 
 
 def prepare_request(path_to_img, isVideo):
-    input = InputRequest("12345678", None, 0.0, isVideo=isVideo)
+    input = RobocupRequest()
     input.image = input.readfile(path_to_img)
     input.displayBag = True
     input.displayChair = True
@@ -29,7 +31,7 @@ def prepare_request(path_to_img, isVideo):
     input.displayPose = True
     input.withMovement = True
     input.onlyMovement = False
-    input.features = True
+    input.features = False
     input.isVideo = isVideo
     return input.get_data()
 
@@ -49,7 +51,7 @@ if __name__ == "__main__":
     parser.add_argument('--video', type=str, default='./data/test_client/cerv.webm', help='input video path')
     parser.add_argument('--dest', type=str, default="./data/demo/demo.png", help='save image/video response at')
     parser.add_argument('--mode', type=int, default=0, help='0: photo 1: video')
-    parser.add_argument('--display', type=int, default=0, help='Display the image after receiving a response.')
+    parser.add_argument('--display', type=int, default=1, help='Display the image after receiving a response.')
     opt = parser.parse_args()
     print(opt)
     display = opt.display
