@@ -4,10 +4,10 @@ port_server: 9989
 
 #Path the the libdarknet.so file.
 #Github: https://github.com/AlexeyAB/darknet
-#In the MakeFile, make sure LIBSO = 1 and recompile of necessary.
+#In the MakeFile, make sure LIBSO = 1 and recompile if necessary.
 
 libdarknet_path:
-  "./dependencies/install/yolo/darknet/libdarknet.so"
+  "/home/celebo/darknet/libdarknet.so"
 
 #Openpose version to use.
 #The official version is faster but is more difficult to install.
