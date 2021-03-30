@@ -1,0 +1,8 @@
+#pip3 install -r requirements.txt
+scikit-build
+pyyaml
+opencv-python
+scipy
+matplotlib
+scikit-image
+tqdm

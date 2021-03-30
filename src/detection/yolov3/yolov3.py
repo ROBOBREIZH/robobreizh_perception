@@ -1,5 +1,5 @@
-from src.detection.yolov3 import darknet
-from src.detection.yolov3.yolo import YOLO
+from detection.yolov3 import darknet
+from detection.yolov3.yolo import YOLO
 #from src.utils.conf import yolo_weights
 
 class YOLOV3(YOLO):

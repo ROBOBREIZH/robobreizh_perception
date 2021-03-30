@@ -1,13 +1,12 @@
 import cv2
-from src.utils.conf import FEATURES
+from utils.conf import FEATURES
 import numpy as np
 
 net = cv2.dnn.readNet(FEATURES.clothesWeights, FEATURES.clothesCfg)
-from src.utils.conf import YOLO_CLOTHES
+from utils.conf import YOLO_CLOTHES
 
 classes = None
-with open(FEATURES.clothesNames, 'r') as f:
-    classes = [line.strip() for line in f.readlines()]
+classes = FEATURES.clothesNames
 
 #scale = 0.00392
 scale = 1.0

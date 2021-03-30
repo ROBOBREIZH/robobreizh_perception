@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+	<param name="use_sim_time" value="true" />
+	<arg name="server_ip" default="127.0.0.1" doc="Value of the server IP, default localhost"/>
+	<arg name="server_port" default="55555" doc="Value of the server port, default 55555"/>
+	<arg name="mode" default="continue" doc="Mode of detection: continue/request, continue will perform continuous detection on object/person, request will wait for a specific publisher"/>
+
+	<node pkg="perception" type="main.py" name="main" output="screen">
+		<param name="server_ip" value="$(arg server_ip)"/>
+		<param name="server_port" value="$(arg server_port)"/>
+		<param name="mode" value="$(arg mode)"/> 
+	</node>
+
+</launch>

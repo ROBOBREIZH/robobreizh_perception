@@ -30,7 +30,7 @@ import os
 import random
 # pylint: disable=R, W0401, W0614, W0703
 from ctypes import *
-from src.utils.conf import libdarknet_path
+from utils.conf import libdarknet_path
 
 def sample(probs):
     s = sum(probs)

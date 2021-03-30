@@ -1,5 +1,5 @@
 import cv2
-from src.utils.conf import FEATURES
+from utils.conf import FEATURES
 
 
 def highlight_face(net, frame, conf_threshold=0.7):
