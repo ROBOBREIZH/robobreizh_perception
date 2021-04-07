@@ -22,12 +22,15 @@ class Perception:
 		self.server_port = rospy.get_param('~server_port', 55555)
 		self.mode = rospy.get_param('~mode','')
 		print("server ip"+self.server_ip)
+
 	def main(self):
 		
 		if self.mode == "continue":
 			self.continuous_detection()
-		elif self.mode == "request":
-			rospy.spin()
+		elif self.mode == "segmentation":
+			self.segmentation_detection()
+
+		rospy.spin()
 
 	def continuous_detection(self):
 		img_counter = 0
@@ -56,6 +59,61 @@ class Perception:
 			img_counter = img_counter + 1 
 
 			sock.close()
+
+	def segmentation_detection(self):
+
+		while(1):
+			t = time.time()
+			sock = socket(AF_INET, SOCK_STREAM)
+
+			sock.connect((self.server_ip, self.server_port))
+
+			img = rospy.wait_for_message("/pepper/camera/front/image_raw", ImageMsg) 
+			msg_depth = rospy.wait_for_message("/pepper/camera/depth/image_raw", ImageMsg) 
+			imageF = self.bridge.imgmsg_to_cv2(img, "bgr8")
+			#imageD = self.bridge.imgmsg_to_cv2(img_depth, "passthrough")
+
+			cv_image = self.bridge.imgmsg_to_cv2(msg_depth, "32FC1")
+			cv_image_array = np.array(cv_image, dtype = np.dtype('f8'))
+			cv_image_norm = cv2.normalize(cv_image_array, cv_image_array, 0, 1, cv2.NORM_MINMAX)
+			# Resize to the desired size
+			self.desired_shape = (640, 480)
+  			cv_image_resized = cv2.resize(cv_image, self.desired_shape, interpolation = cv2.INTER_CUBIC)
+  			#imageF = cv2.resize(imageF, self.desired_shape, interpolation = cv2.INTER_AREA)
+			self.depthimg = cv_image_resized
+			# cv2.imshow("Image from my node", cv_image_resized)
+			# cv2.waitKey(1000)
+
+			#depthImage = np.array(self.imnormalize(np.max(imageD),imageD),dtype=np.uint8)
+			cv2.imwrite("/home/maelic/Documents/ESANet/samples/test/image_depth.png", cv_image_resized)
+			cv2.imwrite("/home/maelic/Documents/ESANet/samples/test/image_rgb.png", imageF)
+
+			result = self.image_request_segmentation(sock, imageF, cv_image_resized)
+			print("Data from detection received, number of objects detected: "+str(len(result)))
+			print("Names of detected objects: "+str(result))
+			print("\n")
+			#cv2.imwrite('detection.png',imag)
+			print("Time Instance Segmentation. "+str((time.time() - t)))
+
+			sock.close()
+
+	def image_request_segmentation(self, sock, img, img_depth):
+		print("Request detection . . . \n")
+		#Parameters: image, image_depth
+		# encoding = {'image': self.cv2_to_base64(img).decode('utf-8'), 'image_depth': self.cv2_to_base64(img_depth).decode('utf-8')}
+
+		# res_bytes = json.dumps(encoding).encode('utf-8')
+
+		# length = pack('>Q', len(res_bytes))
+		# # sendall to make sure it blocks if there's back-pressure on the socket
+		# sock.sendall(length)
+
+		sock.sendall('A')
+
+		res = sock.recv(9999)
+		res_dict = json.loads(res.decode('utf-8'))
+
+		return res_dict
 
 
 	def image_request(self, sock, img, obj, saveImage):
@@ -95,6 +153,13 @@ class Perception:
 		nparr = np.frombuffer(base64.b64decode(encoded_data), np.uint8)
 		img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 		return img
+
+	def imnormalize(self,xmax,image):
+		#Normalize a list of sample image data in the range of 0 to 1
+		xmin = 0
+		a = 0
+		b = 255
+		return ((np.array(image,dtype=np.float32) - xmin) * (b - a)) / (xmax - xmin)
 
 if __name__ == '__main__':
 	try:
